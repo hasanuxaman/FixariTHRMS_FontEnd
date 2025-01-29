@@ -22,21 +22,21 @@ export const AppSidebarNav = ({ items }) => {
   };
 
   const navItem = (item, index, indent = false) => {
-    const { menuName, url, subMenus } = item;
+    const { menuName, url, subMenus, subMenuName } = item;
+  
     return (
-      <div key={index}>
+      <div key={index} style={{ paddingLeft: indent ? '20px' : '0' }}>
         {subMenus && subMenus.length > 0 ? (
           <div>
-            {/* মেনু আইটেম যেটি সাবমেনু থাকে */}
-            <CNavLink to={url}>
-              {navLink(menuName, url, null, indent)}
-            </CNavLink>
-            {subMenus.map((subMenu, idx) => navItem(subMenu, idx, true))}
+            <CNavLink to={url}>{navLink(menuName || subMenuName, url, null, indent)}</CNavLink>
+            {subMenus.map((subMenu, idx) => (
+              <div key={`sub-${idx}`} style={{ paddingLeft: '20px' }}>
+                <CNavLink to={subMenu.url}>{navLink(subMenu.subMenuName, subMenu.url, null, true)}</CNavLink>
+              </div>
+            ))}
           </div>
         ) : (
-          <CNavLink to={url}>
-            {navLink(menuName, url)}
-          </CNavLink>
+          <CNavLink to={url}>{navLink(menuName || subMenuName, url)}</CNavLink>
         )}
       </div>
     );
